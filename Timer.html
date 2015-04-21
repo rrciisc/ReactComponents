@@ -1,0 +1,86 @@
+<html>
+  <head>
+    <title>Hello React</title>
+    <script src="https://fb.me/react-0.13.2.js"></script>
+    <script src="https://code.jquery.com/jquery-2.1.3.min.js"></script>
+	<script>
+	// requestAnimationFrame polyfill
+	(function() {
+		var lastTime = 0;
+		var vendors = ['webkit', 'moz'];
+		for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+			window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+			window.cancelAnimationFrame =
+			  window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+		}
+
+		if (!window.requestAnimationFrame)
+			window.requestAnimationFrame = function(callback, element) {
+				var currTime = new Date().getTime();
+				var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+				var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+				  timeToCall);
+				lastTime = currTime + timeToCall;
+				return id;
+			};
+
+		if (!window.cancelAnimationFrame)
+			window.cancelAnimationFrame = function(id) {
+				clearTimeout(id);
+			};
+	}());
+	</script>
+  </head>
+  <body>
+	<div id="content"></div>
+	<script>
+	var TimerExample = React.createClass({
+		displayName: 'Timer',
+		getInitialState: function() {
+			return {
+				elapsed: 0
+			};
+		},
+		componentDidMount: function() {
+			//this.timer = setInterval(this.tick, 16);
+			setTimeout(this.tick, 0);
+		},
+		componentWillUnmount: function() {
+			//clearInterval(this.timer);
+			window.cancelAnimationFrame(this.timer);
+		},
+		tick: function() {
+			this.setState({
+				elapsed: new Date() - this.props.start
+			});
+			this.timer = window.requestAnimationFrame(this.tick);
+		},
+		render: function() {
+			var elapsed = Math.round(this.state.elapsed / 10);
+			// This will give a number with two digits after the decimal dot (xx.xx)
+			var seconds = (elapsed/100).toFixed(2);
+			return React.createElement(
+				"p",	// html tag
+				null,	// pros
+				"This example was started ",
+				React.createElement(
+					"b",
+					null,
+					seconds,
+					" seconds"
+				),
+				" ago."
+			);
+		}
+	});
+		
+	React.render(
+		React.createElement(
+			TimerExample,
+			{start: Date.now()}
+		),
+		document.getElementById('content')
+	);
+	</script>
+  </body>
+</html>
