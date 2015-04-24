@@ -1,0 +1,68 @@
+<html>
+  <head>
+    <title>Hello React</title>
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/jquery.mobile.css">
+	<script src="https://fb.me/react-0.13.2.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.js"></script>
+	<script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-mobile/1.4.5/jquery.mobile.js"></script>
+	<style>
+		form {
+			margin: 0 auto;
+			width: 800px;
+		}
+	</style>
+  </head>
+  <body>
+	<form id="content"></form>
+	<script>
+		var RangeSlider = React.createClass({
+			displayName: 'RangeSlider',
+			getInitialState: function() {
+				return {
+					leftVal: 20,
+					rightVal: 70,
+					min: 10,
+					max: 75
+				};
+			},
+			render: function() {
+				var child1 = React.createElement(
+					"input",
+					{
+						type: "range",
+						name: "range-1a",
+						id: "range-1a",
+						min: this.state.min,
+						max: this.state.max,
+						defaultValue: this.state.leftVal
+					}
+				);
+				var child2 = React.createElement(
+					"input",
+					{
+						type: "range",
+						name: "range-1b",
+						id: "range-1b",
+						min: this.state.min,
+						max: this.state.max,
+						defaultValue: this.state.rightVal
+					}
+				);
+				return React.createElement(
+					"div",
+					{"data-role": "rangeslider"},
+					child1,
+					child2
+				);
+			}
+		});
+		
+		React.render(
+			React.createElement(RangeSlider),
+			document.getElementById('content')
+		);
+	</script>
+	</div>
+  </body>
+</html>
+
